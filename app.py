@@ -59,6 +59,13 @@ def guardar_bombona():
     tamano_bom = request.form['tamano_bom']
     insert = Usuarios().guardar_bom(tamano_bom)
     return redirect("/inicio")
+# eliminar bombona de un usuario propio, como cliente
+@app.route("/eliminar_bombona", methods=["POST"])
+def eliminar_bombona():
+    id_bom = request.form['id_bombona']
+    Usuarios().eliminar_bombona(id_bom)
+    return redirect("/inicio")
+
 # cerrar session y destruir
 @app.route("/cerrar_session")
 def cerrar_session():

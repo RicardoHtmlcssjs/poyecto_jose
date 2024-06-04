@@ -10,27 +10,36 @@ class Ajax{
 			[
 				{"data": "num"},
 				{"data": "tamano_bombona"},
-				{"data": "estatus"}
+				//{"data": "estatus"}
 				// {"data": "correo"},
 				// {"data": "fec_venci"},
-				// {
-                //     "data": null
-                //     ,
-                //     orderable: true,
-                //     className: 'text-center',
-                //     render: function(data, type, row, meta) {
-                //         return "<div  class='d-flex align-items-center'><p class='mr-2'>"+ row.status +"</p><p class='bg-"+row.color_status+"' style='width: 15px; height: 15px;'></p></div>";
-                //     }
-                // },
-				// {
-                //     "data": null
-                //     ,
-                //     orderable: true,
-                //     className: 'text-center',
-                //     render: function(data, type, row, meta) {
-                //         return "<div><button class='btn btn-light btn-sm mr-1' onclick='ajax.mostrar_modal_sn_para(`/mos_modal1`,`POST`,``, 0, acciones.agr_pag_cli("+row.id_cli+"))'><i class='fa-solid fa-money-bill-1-wave'></i></button><button class='btn btn-light btn-sm mr-1' onclick='ajax.mostrar_modal_sn_para(`/mos_modal_editar`,`POST`,"+row.id_cli+",2, acciones.modal_agregar_cliente())'><i class='fa-solid fa-user-pen'></i></button><button class='btn btn-light btn-sm' onclick='ajax.mostrar_modal_sn_para(`/mos_modal_cam_contra`,`POST`,"+row.id_cli+",3, acciones.modal_cam_contra("+row.id_cli+"))'><i class='fa-solid fa-key'></i></button></div>";
-                //     }
-                // }
+				{
+                    "data": null
+                    ,
+                    orderable: true,
+                    className: 'text-center',
+                    render: function(data, type, row, meta) {
+						if(row.id_estatus == 2){
+							return "<div  class='d-flex align-items-center'><p class='mr-2'>"+ row.estatus +"</p><img style='width: 20px;' src='../static/icons/house-solid.svg'></div>";
+						}else{
+							return "<div  class='d-flex align-items-center'><p class='mr-2'>"+ row.estatus +"</p><img style='width: 20px;' src='../static/icons/bus-solid.svg'></div>";
+						}
+                        
+                    }
+                },
+				{
+                    "data": null
+                    ,
+                    orderable: true,
+                    className: 'text-center',
+                    render: function(data, type, row, meta) {
+						if(row.id_estatus == 2){
+							return "<div><form action='eliminar_bombona' method='POST'><input type='hidden' name='id_bombona' id='id_bombona' value='"+ row.id_entrega_bombona +"'><button class='btn btn-primary btn-sm mr-1' >Eliminar bombona</button></form></div>";
+						}else{
+							return "<p></p>";
+						}
+                    }
+                }
 			],
 			ordering: true,
 			language: {

@@ -20,7 +20,7 @@ class Usuarios():
     # bombonas por persona
     def bombonas_todas(self):
         json_data = []
-        datos_db = Db().fetchall("SELECT usuarios.id_usuario, tamano_bombona.nombre, estatus_bombona.descripcion FROM entrega_bombona INNER JOIN tamano_bombona ON tamano_bombona.id_bombona = entrega_bombona.fk_tamano INNER JOIN estatus_bombona ON estatus_bombona.id_estatus = entrega_bombona.fk_estatus_bombona INNER JOIN usuarios ON usuarios.id_usuario = entrega_bombona.fk_usuario WHERE fk_usuario = "+ str(session['id_usu_log']) +"")
+        datos_db = Db().fetchall("SELECT usuarios.id_usuario, tamano_bombona.nombre, estatus_bombona.descripcion, estatus_bombona.id_estatus, entrega_bombona.id_entraga_bombona FROM entrega_bombona INNER JOIN tamano_bombona ON tamano_bombona.id_bombona = entrega_bombona.fk_tamano INNER JOIN estatus_bombona ON estatus_bombona.id_estatus = entrega_bombona.fk_estatus_bombona INNER JOIN usuarios ON usuarios.id_usuario = entrega_bombona.fk_usuario WHERE fk_usuario = "+ str(session['id_usu_log']) +"")
         print("si corrio")
         n = 0
         for row in datos_db:
@@ -28,7 +28,9 @@ class Usuarios():
             json_data.append({                
                 "num": str(n), 
                 "tamano_bombona": row[1],
-                "estatus": row[2]
+                "estatus": row[2],
+                "id_estatus": row[3],
+                "id_entrega_bombona": row[4]
                 })
         return json_data
     # datos de un usuario en espesifico
@@ -47,7 +49,11 @@ class Usuarios():
         mos_tama_bombo = Db().fetchall("SELECT * FROM tamano_bombona")
         return mos_tama_bombo
     # insertar bombona de un usuario por si solo
-    def guardar_bom(self, bom):
-        bom_guardado = Db().insertar("INSERT INTO entrega_bombona (fk_usuario, fk_tamano, fk_estatus_bombona) VALUES (3, 2, 2)")
+    def guardar_bom(self, tamano_bom):
+        bom_guardado = Db().insertar("INSERT INTO entrega_bombona (fk_usuario, fk_tamano, fk_estatus_bombona) VALUES ("+ str(tamano_bom) +", "+ str(tamano_bom) +", 2)")
         return bom_guardado
+    # eliminar bombona de un usuario en espesifico, como cliente
+    def eliminar_bombona(self, id_bom):
+        eli_bom = Db().insertar("DELETE FROM entrega_bombona WHERE id_entraga_bombona = "+ str(id_bom) +"")
+        return eli_bom
     
