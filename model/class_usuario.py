@@ -17,6 +17,10 @@ class Usuarios():
             return True
         else:
             return False
+    # registrar un usuario
+    def registrar_usuario(self, nombre, cedula, usuario, contrasena, correo):
+        guar_usu = Db().insertar("INSERT INTO usuarios (nombre, cedula, usuario, correo, contrasena, fk_role) VALUES ('"+ nombre +"', '"+ cedula +"', '"+ usuario +"', '"+ correo +"', '"+ contrasena +"', 2)")
+        return guar_usu
     # bombonas por persona
     def bombonas_todas(self):
         json_data = []
@@ -50,7 +54,7 @@ class Usuarios():
         return mos_tama_bombo
     # insertar bombona de un usuario por si solo
     def guardar_bom(self, tamano_bom):
-        bom_guardado = Db().insertar("INSERT INTO entrega_bombona (fk_usuario, fk_tamano, fk_estatus_bombona) VALUES ("+ str(tamano_bom) +", "+ str(tamano_bom) +", 2)")
+        bom_guardado = Db().insertar("INSERT INTO entrega_bombona (fk_usuario, fk_tamano, fk_estatus_bombona) VALUES ("+ str(session['id_usu_log']) +", "+ str(tamano_bom) +", 2)")
         return bom_guardado
     # eliminar bombona de un usuario en espesifico, como cliente
     def eliminar_bombona(self, id_bom):

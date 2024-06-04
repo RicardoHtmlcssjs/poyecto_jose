@@ -10,10 +10,29 @@ app.secret_key = "abc1234"
 def index():
     # si la sesion esta creada redirecionara a inicio
     if Acciones().session() == True:
-        return redirect('/inicio')
+        if session['fk_role'] == 1:
+            return redirect('/administrador')
+        else:    
+            return redirect('/inicio')
     else:
         return render_template('index.html', login = 0)
 
+# registrame
+@app.route("/registrarme")
+def registrarme():
+    return render_template("registrar.html")
+
+# guardar registro de un usuario
+@app.route("/guardar_registro_cli", methods=['POST'])
+def guardar_registro_cli():
+    nombre = request.form['nombre']
+    cedula = request.form['cedula']
+    usuario = request.form['usuario']
+    contrasena = request.form['contrasena']
+    correo = request.form['correo']
+    hh = Usuarios().registrar_usuario(nombre, cedula, usuario, contrasena, correo)
+    return redirect("/")
+    
 # enviar formulario de inicio de sesion
 @app.route("/ini_sesion_usu", methods=['POST'])
 def ini_sesion_usu():
@@ -25,7 +44,10 @@ def ini_sesion_usu():
     login = Usuarios().inicio_sesion(usuario, contrasena)
     # si el usuario inicia sesion correctamente redirecionara a inicio
     if login == True:
-        return redirect('/inicio')
+        if session['fk_role'] == 1:
+            return redirect('/administrador')
+        else:    
+            return redirect('/inicio')
     else:
         return render_template('index.html', log_error=1, text_error='Usuario o contraseña incorrecto', usuario=usuario)
 
@@ -65,6 +87,11 @@ def eliminar_bombona():
     id_bom = request.form['id_bombona']
     Usuarios().eliminar_bombona(id_bom)
     return redirect("/inicio")
+
+# administrador
+@app.route("/administrador")
+def administrador():
+    return render_template('administrador.html')
 
 # cerrar session y destruir
 @app.route("/cerrar_session")
